@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Customer Details</h1>
+<h3>Name: {{customer.name}}</h3>
+<h3>Phone Number: {{customer.phone_number}}</h3>
+<h3>Location: {{customer.location}}</h3>
+<h3>Date Added: {{customer.date_added}}</h3>
+
+
+<hr>
+<a href="{%url 'customers' %}"> <button class="btn btn-dark">Back</button></a>
+<a href="{%url 'edit_customer' customer.pk %}"> <button class="btn btn-dark">Edit</button></a>
+
+
+{% endblock %}
