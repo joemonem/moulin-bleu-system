@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{%block content %}
+
+<br>
+<div style="text-align: center;">
+    <a href="{% url 'add_customer' %}">
+        <button class="btn btn-dark">Add Customer</button>
+    </a>
+</div>
+<br>
+<h1>Customers</h1>
+
+<ul>
+    <!-- "reversed" reverses the order. originally it was displaying the oldest to latest.-->
+    {% for customer in customers %}
+
+    <li>
+        <a href="{%url 'customer_details' customer.pk %}"> {{customer.name}} </a>
+        <br>
+        <!-- shows first 30 characters. removing the slice part would show the entire body-->
+        <!-- {{post.body | slice:":30"}} -->
+    </li>
+
+    {% endfor %}
+
+</ul>
+
+{% endblock %}
