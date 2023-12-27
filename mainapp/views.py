@@ -66,6 +66,9 @@ class AddCustomerView(CreateView):
     template_name = "add_customer.html"
     # form_class = PostForm
 
+    def get_success_url(self):
+        return reverse("customers")
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -110,6 +113,7 @@ class CustomerSearchView(TemplateView):
         # Add customers to context
         context = self.get_context_data(**kwargs)
         context["customers"] = customers
+        context["name_or_num"] = name_or_num
 
         # Return the rendered template with context
         return self.render_to_response(context)
