@@ -114,10 +114,10 @@
 
 <ul>
     <!-- "reversed" reverses the order. originally it was displaying the oldest to latest.-->
-    {% for item in items %}
+    {% for food_item in food_items %}
 
     <li>
-        <a href="{%url 'food_details' item.pk %}"> {{item.name}} _${{item.price}} </a>
+        <a href="{%url 'food_details' food_item.pk %}"> {{food_item.name}} _${{food_item.price}} </a>
         <br>
         <!-- shows first 30 characters. removing the slice part would show the entire body-->
         <!-- {{post.body | slice:":30"}} -->

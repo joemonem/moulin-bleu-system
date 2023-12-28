@@ -3,14 +3,31 @@
 {% block content %}
 
 <h1>Food Item Details</h1>
-<h3>Name: {{item.name}}</h3>
-<h3>Phone Number: {{item.price}}</h3>
-<h3>Location: {{item.notes}}</h3>
+<br>
+<h3>Name: {{object.name}}</h3>
+<h3>Price: ${{object.price}}</h3>
+<h3>Notes: {{object.notes}}</h3>
+<h3>Plat du Jour: {{object.plat_du_jour}}</h3>
 
 
 
 <hr>
 <a href="{%url 'menu' %}"> <button class="btn btn-dark">Back</button></a>
+<br>
+<br>
+
+<form method="post">
+    {% csrf_token %}
+    {% if object.plat_du_jour == False %}
+    <button type="submit" name="toggle_plat_du_jour" class="btn btn-success">
+        Make Plat Du Jour
+    </button>
+    {% else %}
+    <button type="submit" name="toggle_plat_du_jour" class="btn btn-danger">
+        Remove Plat Du Jour
+    </button>
+    {%endif%}
+</form>
 
 
 

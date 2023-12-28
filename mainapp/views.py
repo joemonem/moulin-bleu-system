@@ -13,6 +13,7 @@ from django.db.models import Q
 
 
 from .models import Customer
+from menuapp.models import FoodItem
 
 # from .forms import PostForm, EditForm
 from django.shortcuts import render, redirect, get_object_or_404
@@ -32,16 +33,12 @@ from django.views.decorators.http import require_POST
 
 
 class HomeView(ListView):
-    model = Customer
+    model = FoodItem
     template_name = "home.html"
-    context_object_name = "posts"
-
-    # ordering = ["-published_date"]
+    context_object_name = "items"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # Include information about the signed-in user if authenticated
 
         return context
 
@@ -50,15 +47,6 @@ class CustomersView(ListView):
     model = Customer
     template_name = "customers.html"
     context_object_name = "customers"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        customers = Customer.objects.all()
-
-        context["customers"] = customers
-
-        return context
 
 
 class AddCustomerView(CreateView):
