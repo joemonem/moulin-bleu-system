@@ -68,7 +68,7 @@
         padding: 0;
         /* Remove default list-style */
         list-style: none;
-        text-align: center;
+        text-align: left;
 
     }
 
@@ -114,7 +114,14 @@
 
 <h2>Today's Plat du Jour</h2>
 
+<ul>
+    {% for plat_du_jour in plats_du_jour %}
 
+    <li>
+        <a href="{% url 'food_details' plat_du_jour.pk %}"> {{plat_du_jour.name}} ${{plat_du_jour.price}} </a>
+        <br>
+    </li>
 
+    {% endfor %}
 
-{% endblock %}
+    {% endblock %}

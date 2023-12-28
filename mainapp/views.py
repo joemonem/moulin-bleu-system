@@ -39,6 +39,9 @@ class HomeView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        plats_du_jour = FoodItem.objects.filter(plat_du_jour=True)
+
+        context["plats_du_jour"] = plats_du_jour
 
         return context
 
