@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Food Item Details</h1>
+<h3>Name: {{item.name}}</h3>
+<h3>Phone Number: {{item.price}}</h3>
+<h3>Location: {{item.notes}}</h3>
+
+
+
+<hr>
+<a href="{%url 'menu' %}"> <button class="btn btn-dark">Back</button></a>
+
+
+
+{% endblock %}
