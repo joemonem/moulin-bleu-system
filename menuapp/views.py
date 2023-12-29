@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.urls import reverse
 
 
 from django.views.generic import (
@@ -42,3 +43,13 @@ class FoodDetailsView(DetailView):
 
         # ... redirect or handle success ...
         return redirect("food_details", pk=pk)
+
+
+class EditFoodView(UpdateView):
+    model = FoodItem
+    template_name = "edit_food.html"
+    fields = ("name", "price", "notes")
+
+    def get_success_url(self):
+        food_item = self.object.pk
+        return reverse("food_details", args=[food_item])

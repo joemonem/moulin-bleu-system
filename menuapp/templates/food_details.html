@@ -12,10 +12,19 @@
 
 
 <hr>
+
+<!--Back button-->
 <a href="{%url 'menu' %}"> <button class="btn btn-dark">Back</button></a>
+
 <br>
 <br>
 
+<!--Edit button-->
+<a href="{%url 'edit_food' object.pk %}"> <button class="btn btn-dark">Edit</button></a>
+<br>
+<br>
+
+<!--Make or Remove Plat Du Jour button-->
 <form method="post">
     {% csrf_token %}
     {% if object.plat_du_jour == False %}
@@ -28,6 +37,8 @@
     </button>
     {%endif%}
 </form>
+
+
 
 
 
