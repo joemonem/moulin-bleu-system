@@ -110,6 +110,13 @@
 
 
 <h1>Menu</h1>
+<br>
+
+<form method="post" action="{% url 'menu_search' %}" class="d-flex" style="max-width: 300px; margin: 0 auto;">
+    {% csrf_token %}
+    <input class="form-control me-2" type="input" name="submission" placeholder="Search Menu">
+</form>
+<br>
 
 
 <ul>
@@ -126,6 +133,7 @@
     {% endfor %}
 
 </ul>
+
 
 
 

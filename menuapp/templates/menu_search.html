@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{%block content %}
+
+
+{%if food_items%}
+<h1>Search Results for "{{name}}"</h1>
+
+<ul>
+    {% for food_item in food_items %}
+
+    <li>
+        <a href="{%url 'food_details' food_item.pk %}"> {{food_item.name}} -- {{food_item.price}} </a>
+        <br>
+    </li>
+
+    {% endfor %}
+
+</ul>
+{%else%}
+<h1>No results found for "{{name}}"</h1>
+
+<form method="post" action="{% url 'menu_search' %}" class="d-flex" style="max-width: 300px; margin: 0 auto;">
+    {% csrf_token %}
+    <input class="form-control me-2" type="input" name="submission" placeholder="Search Menu">
+</form>
+
+{%endif%}
+
+<!--Back button-->
+<a href="{%url 'menu' %}"> <button class="btn btn-dark">Back to Menu</button></a>
+
+{% endblock %}

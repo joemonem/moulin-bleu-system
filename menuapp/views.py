@@ -53,3 +53,25 @@ class EditFoodView(UpdateView):
     def get_success_url(self):
         food_item = self.object.pk
         return reverse("food_details", args=[food_item])
+
+
+class MenuSearchView(TemplateView):
+    model = FoodItem
+    template_name = "menu_search.html"
+
+    def post(self, request, *args, **kwargs):
+        # Access search query from POST data
+        name = request.POST.get("submission")
+
+        # Perform case-insensitive search on name
+        food_items = FoodItem.objects.filter(name__icontains=name)
+
+        # Add food items to context
+        context = self.get_context_data(**kwargs)
+        context["food_items"] = food_items
+
+        # User's submission
+        context["name"] = name
+
+        # Return the rendered template with context
+        return self.render_to_response(context)
