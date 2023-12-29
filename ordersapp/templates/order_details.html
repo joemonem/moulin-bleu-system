@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Order Details</h1>
+<br>
+<h3>Customer: {{order.customer}}</h3>
+<br>
+<h3>Created At: {{object.created_at}}</h3>
+<br>
+<h3>Needed For: {{object.needed_for}}</h3>
+<br>
+<h3>Order Items:</h3>
+<ul>
+    {% for item in object.order_items.all %}
+    <li>{{ item }} </li>
+    {% endfor %}
+</ul>
+
+<br>
+<h3>Paid Status: {{object.paid}} </h3>
+<h3>Total Price: {{object.total_price}}</h3>
+
+
+
+
+<hr>
+<a href="{%url 'orders' %}"> <button class="btn btn-dark">Back</button></a>
+<a href="{%url 'edit_order' object.pk %}"> <button class="btn btn-dark">Edit</button></a>
+
+
+{% endblock %}

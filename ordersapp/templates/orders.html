@@ -68,7 +68,7 @@
         padding: 0;
         /* Remove default list-style */
         list-style: none;
-        text-align: left;
+        text-align: center;
 
     }
 
@@ -109,40 +109,35 @@
 
 
 
-<h1>Hello</h1>
+<h1>Orders</h1>
 
+<br>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-5">
-            <h2>Today's Plat du Jour</h2>
-
-            <ul>
-                {% for plat_du_jour in plats_du_jour %}
-                <li>
-                    <a href="{% url 'food_details' plat_du_jour.pk %}">{{ plat_du_jour.name }} ${{ plat_du_jour.price
-                        }}</a>
-                    <br>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="col-md-5">
-            <h2>Today's Orders</h2>
-
-            <ul>
-                {% for order_for_today in orders_for_today %}
-                <li>
-                    <a href="{% url 'order_details' order_for_today.pk %}">{{ order_for_today }}</a>
-                    <br>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
+<div style="text-align: center;">
+    <a href="{% url 'add_order_item' %}">
+        <button class="btn btn-dark">Add Order Item</button>
+    </a>
 </div>
 
+<br>
+
+<ul>
+    <!-- "reversed" reverses the order. originally it was displaying the oldest to latest.-->
+    {% for order in orders %}
+
+    <li>
+        <a href="{%url 'order_details' order.pk %}"> {{order.customer.name}} x {{order.needed_for}} --
+            ${{order.total_price}} </a>
+
+
+        <br>
+        <!-- shows first 30 characters. removing the slice part would show the entire body-->
+        <!-- {{post.body | slice:":30"}} -->
+    </li>
+
+    {% endfor %}
+
+</ul>
 
 
 

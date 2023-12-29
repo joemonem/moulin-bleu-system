@@ -31,4 +31,10 @@ urlpatterns = [
             "menuapp.urls",
         ),
     ),
+    path(
+        "",
+        include(
+            "ordersapp.urls",
+        ),
+    ),
 ]

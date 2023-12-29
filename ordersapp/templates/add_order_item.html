@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .messages ul,
+    .posts ul {
+        /* Add border-bottom for separation between sections */
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+    }
+</style>
+
+<h1>Add Order Item</h1>
+<br>
+
+<div style="text-align: center;">
+    <a href="{% url 'add_customer' %}">
+        <button class="btn btn-dark">Add Customer</button>
+    </a>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <button>Save</button>
+</form>
+<br>
+<a href="{%url 'order_items' %}"> <button class="btn btn-dark">Cancel</button></a>
+
+
+
+{% endblock %}

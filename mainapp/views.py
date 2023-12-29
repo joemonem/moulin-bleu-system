@@ -28,6 +28,10 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.utils import timezone
+
+
+from ordersapp.models import Order
 
 # Create your views here.
 
@@ -40,8 +44,12 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         plats_du_jour = FoodItem.objects.filter(plat_du_jour=True)
+        today = timezone.now().date()
+
+        orders_for_today = Order.objects.filter(needed_for__date=today)
 
         context["plats_du_jour"] = plats_du_jour
+        context["orders_for_today"] = orders_for_today
 
         return context
 
