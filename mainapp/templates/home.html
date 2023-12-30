@@ -120,8 +120,8 @@
             <ul>
                 {% for plat_du_jour in plats_du_jour %}
                 <li>
-                    <a href="{% url 'food_details' plat_du_jour.pk %}">{{ plat_du_jour.name }} ${{ plat_du_jour.price
-                        }}</a>
+                    <a href="{% url 'food_details' plat_du_jour.pk %}"> {{ plat_du_jour.name }}
+                        ${{plat_du_jour.price}}</a>
                     <br>
                 </li>
                 {% endfor %}
