@@ -118,6 +118,23 @@ class CustomerSearchView(TemplateView):
         return self.render_to_response(context)
 
 
+class FutureOrdersView(ListView):
+    model = FoodItem
+    template_name = "future_orders.html"
+    context_object_name = "orders"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = timezone.now().date()
+
+        # __gt means greater than, so we keep the orders needed for the future
+        future_orders = Order.objects.filter(needed_for__gt=today)
+
+        context["future_orders"] = future_orders
+
+        return context
+
+
 # class TodaysOrderView(ListView):
 #     model = Customer
 #     template_name = "home.html"
