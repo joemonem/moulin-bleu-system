@@ -100,3 +100,18 @@ class FutureOrdersView(ListView):
         context["future_orders"] = future_orders
 
         return context
+
+
+class TodaysOrdersView(ListView):
+    model = Order
+    template_name = "todays_orders.html"
+    context_object_name = "orders"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = timezone.now().date()
+
+        todays_orders = Order.objects.filter(needed_for__date=today)
+        context["todays_orders"] = todays_orders
+
+        return context

@@ -6,6 +6,7 @@ from .views import (
     OrderDetailsView,
     EditOrderView,
     FutureOrdersView,
+    TodaysOrdersView,
 )
 
 
@@ -16,6 +17,7 @@ urlpatterns = [
     path("orders/<int:pk>", OrderDetailsView.as_view(), name="order_details"),
     path("orders/edit/<int:pk>", EditOrderView.as_view(), name="edit_order"),
     path("future_orders", FutureOrdersView.as_view(), name="future_orders"),
+    path("todays_orders", TodaysOrdersView.as_view(), name="todays_orders"),
     # path("food_details/<int:pk>", FoodDetailsView.as_view(), name="food_details"),
     # path("food_details/edit/<int:pk>", EditFoodView.as_view(), name="edit_food"),
     # path("menu/search", MenuSearchView.as_view(), name="menu_search"),
