@@ -110,14 +110,22 @@
 
 
 <h1>All Orders</h1>
+<br>
+
+<!--Search Form-->
+<form method="post" action="{% url 'order_search' %}" class="d-flex" style="max-width: 300px; margin: 0 auto;">
+    {% csrf_token %}
+    <input class="form-control me-2" type="input" name="submission" placeholder="Search Orders">
+</form>
 
 <br>
 
 <div style="text-align: center;">
-    <a href="{% url 'add_order_item' %}">
-        <button class="btn btn-dark">Add Order Item</button>
+    <a href="{% url 'add_order' %}">
+        <button class="btn btn-dark">Add Order</button>
     </a>
 </div>
+
 
 <br>
 

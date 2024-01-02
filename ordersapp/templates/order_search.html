@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{%block content %}
+
+
+{%if customer_orders%}
+
+<h1>Orders for "{{customer}}"</h1>
+
+<ul>
+    {% for customer_order in customer_orders %}
+
+    <li>
+        <a href="{%url 'order_details' customer_order.pk %}"> {{customer_order.customer.name}} --
+            {{customer_order.needed_for}} </a>
+        <br>
+    </li>
+
+    {% endfor %}
+
+</ul>
+
+{%else%}
+
+<h1>No results found for "{{customer}}"</h1>
+
+<!--Search Form-->
+<form method="post" action="{% url 'order_search' %}" class="d-flex" style="max-width: 300px; margin: 0 auto;">
+    {% csrf_token %}
+    <input class="form-control me-2" type="input" name="submission" placeholder="Search Orders">
+</form>
+
+{%endif%}
+
+<!--Back button-->
+<a href="{%url 'orders' %}"> <button class="btn btn-dark">Back to Orders</button></a>
+
+{% endblock %}

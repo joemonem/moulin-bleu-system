@@ -18,6 +18,7 @@ from django.views.generic import (
 from django.db.models import Q
 from .models import OrderItem, Order
 from django.utils import timezone
+from .forms import OrderForm
 
 
 # Create your views here.
@@ -68,6 +69,61 @@ class FoodDetailsView(DetailView):
 
         # ... redirect or handle success ...
         return redirect("food_details", pk=pk)
+
+
+class AddOrderView(CreateView):
+    model = Order
+    template_name = "add_order.html"
+    form_class = OrderForm
+
+    def get_success_url(self):
+        return reverse("orders")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+    def form_valid(self, form):
+        # Assuming you have an OrderItemFormSet attribute named order_items_formset
+        form.instance = form.save()  # Save the main form (OrderForm) to get an instance
+        order_items_formset = OrderItemFormSet(
+            self.request.POST, instance=form.instance
+        )
+
+        if order_items_formset.is_valid():
+            order_items_formset.instance = form.instance
+            order_items_formset.save()
+            return super().form_valid(form)
+        else:
+            # If formset is not valid, render the form page again with the errors
+            return self.form_invalid(form)
+
+
+class OrderSearchView(TemplateView):
+    model = Order
+    template_name = "order_search.html"
+
+    def post(self, request, *args, **kwargs):
+        # Access search query from POST data
+        customer = request.POST.get("submission")
+
+        # Perform case-insensitive search on customer name
+        customer_orders = Order.objects.filter(
+            customer__name__icontains=customer
+        ).order_by(  # Sorts them from latest "created_at" date
+            "-created_at"
+        )
+
+        # Add food items to context
+        context = self.get_context_data(**kwargs)
+        context["customer_orders"] = customer_orders
+
+        # User's submission
+        context["customer"] = customer
+
+        # Return the rendered template with context
+        return self.render_to_response(context)
 
 
 class AddOrderItemView(CreateView):

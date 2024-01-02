@@ -14,6 +14,9 @@ class OrderItem(models.Model):
     food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
     # Need to accept floats mosly for the items sold in dozens like sambousek (half dozen, dozen and a half...)
     quantity = models.FloatField()
+    linked_order = models.ForeignKey(
+        "Order", on_delete=models.CASCADE, null=True, blank=True
+    )
 
     @property
     def price(self):
