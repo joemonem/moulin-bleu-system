@@ -62,6 +62,10 @@
                 <p{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
                     {% endfor %}
             </ul>
+            <form method="post" action="{% url 'order_search' %}" class="d-flex" style="max-width: 300px;">
+                {% csrf_token %}
+                <input class="form-control me-2" type="input" name="submission" placeholder="Search for Orders">
+            </form>
             <form method="post" action="{% url 'customer_search' %}" class="d-flex" style="max-width: 300px;">
                 {% csrf_token %}
                 <input class="form-control me-2" type="input" name="submission" placeholder="Search for Customer">

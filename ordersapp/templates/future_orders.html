@@ -109,8 +109,49 @@
 
 
 
-<h1>Future Orders</h1>
+<h1>Future</h1>
 
+<h2>Pickup Orders</h2>
+
+<ul>
+    {% for future_pickup_order in future_pickup_orders %}
+    <li>
+        {%if future_pickup_order.paid == False%}
+        <a href="{%url 'order_details' future_pickup_order.pk %}"> {{future_pickup_order.customer.name}} -
+            {{future_pickup_order.needed_for}} -
+            ${{future_pickup_order.total_price}} -- NOT paid </a>
+        {%else%}
+        <a href="{%url 'order_details' future_pickup_order.pk %}"> {{future_pickup_order.customer.name}} -
+            {{future_pickup_order.needed_for}} -
+            ${{future_pickup_order.total_price}} -- PAID </a>
+        {%endif%}
+        <br>
+    </li>
+    {% endfor %}
+</ul>
+
+<br>
+
+<h2>Delivery Orders</h2>
+
+<ul>
+    {% for future_delivery_order in future_delivery_orders %}
+    <li>
+        {%if future_delivery_order.paid == False%}
+        <a href="{%url 'order_details' future_delivery_order.pk %}"> {{future_delivery_order.customer.name}} -
+            {{future_delivery_order.needed_for}} -
+            ${{future_delivery_order.total_price}} -- NOT paid </a>
+        {%else%}
+        <a href="{%url 'order_details' future_delivery_order.pk %}"> {{future_delivery_order.customer.name}} -
+            {{future_delivery_order.needed_for}} -
+            ${{future_delivery_order.total_price}} -- PAID </a>
+        {%endif%}
+        <br>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>All Orders</h2>
 <ul>
     {% for future_order in future_orders %}
     <li>

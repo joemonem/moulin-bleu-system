@@ -48,10 +48,14 @@ class HomeView(ListView):
 
         pickup_orders_for_today = Order.objects.filter(
             needed_for__date=today, delivery=False
-        )
+        ).order_by(
+            "needed_for"
+        )  # Displays the orders with the closest "need_for" times
         delivery_orders_for_today = Order.objects.filter(
             needed_for__date=today, delivery=True
-        )
+        ).order_by(
+            "needed_for"
+        )  # Displays the orders with the closest "need_for" times
 
         context["plats_du_jour"] = plats_du_jour
         context["pickup_orders_for_today"] = pickup_orders_for_today

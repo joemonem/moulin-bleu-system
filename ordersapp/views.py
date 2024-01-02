@@ -151,9 +151,20 @@ class FutureOrdersView(ListView):
         today = timezone.now().date()
 
         # __gt means greater than, so we keep the orders needed for the future
-        future_orders = Order.objects.filter(needed_for__date__gt=today)
+        future_pickup_orders = Order.objects.filter(
+            needed_for__date__gt=today, delivery=False
+        ).order_by(
+            "needed_for"
+        )  # Ordered by latest "needed_for" dates
 
-        context["future_orders"] = future_orders
+        future_delivery_orders = Order.objects.filter(
+            needed_for__date__gt=today, delivery=True
+        ).order_by(
+            "needed_for"
+        )  # Ordered by latest "needed_for" dates
+
+        context["future_pickup_orders"] = future_pickup_orders
+        context["future_delivery_orders"] = future_delivery_orders
 
         return context
 
