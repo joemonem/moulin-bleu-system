@@ -34,6 +34,22 @@
 <hr>
 <a href="{%url 'orders' %}"> <button class="btn btn-dark">Back</button></a>
 <a href="{%url 'edit_order' object.pk %}"> <button class="btn btn-dark">Edit</button></a>
+<br>
+<br>
+<!--Make as Paid or Not paid-->
+<form method="post">
+    {% csrf_token %}
+    {% if object.paid == False %}
+    <button type="submit" name="toggle_paid" class="btn btn-success">
+        Mark as Paid
+    </button>
+    {% else %}
+    <button type="submit" name="toggle_paid" class="btn btn-danger">
+        Mark as NOT Paid
+    </button>
+    {%endif%}
+</form>
+
 
 
 {% endblock %}

@@ -41,6 +41,16 @@ class OrderDetailsView(DetailView):
     template_name = "order_details.html"
     fields = "__all__"
 
+    def post(self, request, pk):
+        order_item = get_object_or_404(Order, pk=pk)
+
+        # Toggle plat_du_jour value
+        order_item.paid = not order_item.paid
+        order_item.save()  # Save the change to the database
+
+        # ... redirect or handle success ...
+        return redirect("order_details", pk=pk)
+
 
 class EditOrderView(UpdateView):
     model = Order
