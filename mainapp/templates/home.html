@@ -107,41 +107,64 @@
     }
 </style>
 
+<h1>Today</h1>
 
 
-<h1>Hello</h1>
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-5">
-            <h2>Today's Plat du Jour</h2>
+<h2>Plats du Jour</h2>
 
-            <ul>
-                {% for plat_du_jour in plats_du_jour %}
-                <li>
-                    <a href="{% url 'food_details' plat_du_jour.pk %}"> {{ plat_du_jour.name }}
-                        ${{plat_du_jour.price}}</a>
-                    <br>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+<ul>
+    {% for plat_du_jour in plats_du_jour %}
+    <li>
+        <a href="{% url 'food_details' plat_du_jour.pk %}"> {{ plat_du_jour.name }}
+            ${{plat_du_jour.price}}</a>
+        <br>
+    </li>
+    {% endfor %}
+</ul>
 
-        <div class="col-md-5">
-            <h2>Today's Orders</h2>
+<br>
 
-            <ul>
-                {% for order_for_today in orders_for_today %}
-                <li>
-                    <a href="{% url 'order_details' order_for_today.pk %}">{{ order_for_today }}</a>
-                    <br>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-</div>
+<h2>Pickup Orders</h2>
+
+<ul>
+    {% for pickup_order_for_today in pickup_orders_for_today %}
+    <li>
+        {%if pickup_order_for_today.paid == False%}
+        <a href="{%url 'order_details' pickup_order_for_today.pk %}"> {{pickup_order_for_today.customer.name}} -
+            {{pickup_order_for_today.needed_for.time}} -
+            ${{pickup_order_for_today.total_price}} -- NOT paid </a>
+        {%else%}
+        <a href="{%url 'order_details' pickup_order_for_today.pk %}"> {{pickup_order_for_today.customer.name}} -
+            {{pickup_order_for_today.needed_for.time}} -
+            ${{pickup_order_for_today.total_price}} -- PAID </a>
+        {%endif%}
+        <br>
+    </li>
+    {% endfor %}
+</ul>
+
+<br>
+
+<h2>Delivery Orders</h2>
+
+<ul>
+    {% for delivery_order_for_today in delivery_orders_for_today %}
+    <li>
+        {%if delivery_order_for_today.paid == False%}
+        <a href="{%url 'order_details' delivery_order_for_today.pk %}"> {{delivery_order_for_today.customer.name}} -
+            {{delivery_order_for_today.needed_for.time}} -
+            ${{delivery_order_for_today.total_price}} -- NOT paid </a>
+        {%else%}
+        <a href="{%url 'order_details' delivery_order_for_today.pk %}"> {{delivery_order_for_today.customer.name}} -
+            {{delivery_order_for_today.needed_for.time}} -
+            ${{delivery_order_for_today.total_price}} -- PAID </a>
+        {%endif%}
+        <br>
+    </li>
+    {% endfor %}
+</ul>
 
 
 

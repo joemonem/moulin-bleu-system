@@ -109,7 +109,7 @@
 
 
 
-<h1>Orders</h1>
+<h1>All Orders</h1>
 
 <br>
 
@@ -122,7 +122,6 @@
 <br>
 
 <ul>
-    <!-- "reversed" reverses the order. originally it was displaying the oldest to latest.-->
     {% for order in orders %}
 
     <li>
@@ -131,8 +130,6 @@
 
 
         <br>
-        <!-- shows first 30 characters. removing the slice part would show the entire body-->
-        <!-- {{post.body | slice:":30"}} -->
     </li>
 
     {% endfor %}

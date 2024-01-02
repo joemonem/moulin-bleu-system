@@ -46,10 +46,16 @@ class HomeView(ListView):
         plats_du_jour = FoodItem.objects.filter(plat_du_jour=True)
         today = timezone.now().date()
 
-        orders_for_today = Order.objects.filter(needed_for__date=today)
+        pickup_orders_for_today = Order.objects.filter(
+            needed_for__date=today, delivery=False
+        )
+        delivery_orders_for_today = Order.objects.filter(
+            needed_for__date=today, delivery=True
+        )
 
         context["plats_du_jour"] = plats_du_jour
-        context["orders_for_today"] = orders_for_today
+        context["pickup_orders_for_today"] = pickup_orders_for_today
+        context["delivery_orders_for_today"] = delivery_orders_for_today
 
         return context
 
@@ -116,23 +122,6 @@ class CustomerSearchView(TemplateView):
 
         # Return the rendered template with context
         return self.render_to_response(context)
-
-
-class FutureOrdersView(ListView):
-    model = FoodItem
-    template_name = "future_orders.html"
-    context_object_name = "orders"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = timezone.now().date()
-
-        # __gt means greater than, so we keep the orders needed for the future
-        future_orders = Order.objects.filter(needed_for__gt=today)
-
-        context["future_orders"] = future_orders
-
-        return context
 
 
 # class TodaysOrderView(ListView):

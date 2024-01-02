@@ -11,7 +11,7 @@
     {% for food_item in food_items %}
 
     <li>
-        <a href="{%url 'food_details' food_item.pk %}"> {{food_item.name}} -- {{food_item.price}} </a>
+        <a href="{%url 'food_details' food_item.pk %}"> {{food_item.name}} -- ${{food_item.price}} </a>
         <br>
     </li>
 

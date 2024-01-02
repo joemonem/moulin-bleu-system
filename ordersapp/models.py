@@ -32,6 +32,7 @@ class Order(models.Model):
     needed_for = models.DateTimeField()
     order_items = models.ManyToManyField(OrderItem, null=False)
     paid = models.BooleanField(null=False, default=False)
+    delivery = models.BooleanField(null=False, default=False)
     notes = models.TextField(null=True)
 
     def calculate_total_price(self):

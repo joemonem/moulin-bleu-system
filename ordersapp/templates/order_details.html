@@ -6,23 +6,28 @@
 <br>
 <h3>Customer: {{order.customer}}</h3>
 <br>
-<h3>Created At: {{object.created_at}}</h3>
-<br>
 <h3>Needed For: {{object.needed_for}}</h3>
 <br>
 <h3>Order Items:</h3>
 <ul>
     {% for item in object.order_items.all %}
-    <li>{{ item }} </li>
+    <li>{{ item }} -- ${{item.price}} </li>
     {% endfor %}
 </ul>
 
 <br>
-<h3>Paid Status: {{object.paid}} </h3>
+<h3>For Delivery: {{object.delivery}} </h3>
+
+{%if object.paid == False %}
+<h3 style="color: red;">NOT paid </h3>
+{%else%}
+<h3 style="color: green;">PAID</h3>
+{%endif%}
+
 <h3>Total Price: ${{object.total_price}}</h3>
 <h3>Notes: {{object.notes}}</h3>
 
-
+<p>Created At: {{object.created_at}}</p>
 
 
 
