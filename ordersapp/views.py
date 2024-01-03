@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 
 from django.views.generic import (
@@ -16,9 +16,10 @@ from django.views.generic import (
     View,
 )
 from django.db.models import Q
+from django.db import transaction
 from .models import OrderItem, Order
 from django.utils import timezone
-from .forms import OrderForm
+from .forms import OrderItemForm, OrderItemFormSet, OrderForm
 
 
 # Create your views here.
@@ -85,29 +86,84 @@ class AddOrderView(CreateView):
     model = Order
     template_name = "add_order.html"
     form_class = OrderForm
-
-    def get_success_url(self):
-        return reverse("orders")
+    success_url = reverse_lazy("orders")
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        return context
+        data = super(AddOrderView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data["order_items"] = OrderItemFormSet(self.request.POST)
+        else:
+            data["order_items"] = OrderItemFormSet()
+        return data
 
     def form_valid(self, form):
-        # Assuming you have an OrderItemFormSet attribute named order_items_formset
-        form.instance = form.save()  # Save the main form (OrderForm) to get an instance
-        order_items_formset = OrderItemFormSet(
-            self.request.POST, instance=form.instance
-        )
+        context = self.get_context_data()
+        order_items = context["order_items"]
 
-        if order_items_formset.is_valid():
-            order_items_formset.instance = form.instance
-            order_items_formset.save()
-            return super().form_valid(form)
-        else:
-            # If formset is not valid, render the form page again with the errors
-            return self.form_invalid(form)
+        with transaction.atomic():
+            self.object = form.save()
+
+            if order_items.is_valid():
+                order_items.instance = self.object
+
+                order_items.save()
+        return super(AddOrderView, self).form_valid(form)
+
+    def get_success_url(self):
+        # Assuming your Order model has a many-to-many relationship with OrderItem
+        # Update the order_items field of the Order instance with the newly created OrderItem instances
+        order_items = OrderItem.objects.filter(order=self.object)
+        self.object.order_items.set(order_items)
+
+        return reverse("orders")
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     if self.request.POST:
+    #         context["order_items_formset"] = OrderItemFormSet(self.request.POST)
+    #     else:
+    #         context["order_items_formset"] = OrderItemFormSet()
+    #     return context
+
+    # def form_valid(self, form):
+    #     context = self.get_context_data()
+    #     order_items_formset = context["order_items_formset"]
+
+    #     # Validate the formset
+    #     if order_items_formset.is_valid():
+    #         # Save the Order instance
+    #         order = form.save()
+
+    # # Associate the OrderItem instances with the Order
+    # for order_item_form in order_items_formset:
+    #     food_item = order_item_form.cleaned_data.get("food_item")
+    #     quantity = order_item_form.cleaned_data.get("quantity")
+
+    #     # Check if the entry already exists in OrderItem to avoid saving duplicates
+    #     existing_order_item = OrderItem.objects.filter(
+    #         food_item=food_item,
+    #         quantity=quantity,
+    #     ).first()
+
+    #     if not existing_order_item:
+    #         order_items_model = OrderItem(
+    #             food_item=food_item, quantity=quantity, linked_order=order
+    #         )
+    #         order_items_model.save()
+    #     else:
+    #         order_items_model = existing_order_item
+
+    #     order.order_items.add(order_items_model)
+
+    # # Save the Order instance with the updated order_items
+    # order.save()
+
+    #         # Redirect to the success URL
+    #         return super().form_valid(form)
+    #     else:
+    #         # If the formset is not valid, handle the error or redirect as needed
+    #         # For example, you might want to return HttpResponseBadRequest
+    #         return self.form_invalid(form)
 
 
 class OrderSearchView(TemplateView):

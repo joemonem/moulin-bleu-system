@@ -1,7 +1,5 @@
 from django import forms
 from django.db import models
-from menuapp.models import FoodItem
-from mainapp.models import Customer
 from .models import Order, OrderItem
 from django.forms import inlineformset_factory
 
@@ -14,27 +12,42 @@ from django.forms import inlineformset_factory
 #     quantity = models.FloatField()
 
 
-class OrderItemForm(forms.ModelForm):
-    class Meta:
-        model = OrderItem
-        fields = ["food_item", "quantity"]
+# class OrderItemForm(forms.ModelForm):
+#     class Meta:
+#         model = OrderItem
+#         fields = ["food_item", "quantity"]
 
 
-OrderItemFormSet = inlineformset_factory(
-    Order,
-    OrderItem,
-    form=OrderItemForm,
-    extra=1,
-)
+# OrderItemFormSet = inlineformset_factory(
+#     Order,
+#     OrderItem,
+#     form=OrderItemForm,
+#     extra=1,
+# )
 
 
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ["customer", "needed_for", "paid", "delivery", "notes"]
+        fields = [
+            "customer",
+            "needed_for",
+            "paid",
+            "delivery",
+            "notes",
+        ]
 
         widgets = {
             "needed_for": forms.widgets.DateTimeInput(attrs={"type": "datetime-local"}),
         }
 
-    order_items = OrderItemFormSet()
+    # order_items_custom = OrderItemFormSet()
+
+
+class OrderItemForm(forms.ModelForm):
+    class Meta:
+        model = OrderItem
+        exclude = ()
+
+
+OrderItemFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=1)
