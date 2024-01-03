@@ -35,6 +35,7 @@ class OrdersView(ListView):
     model = Order
     template_name = "orders.html"
     context_object_name = "orders"
+    ordering = ["-created_at"]
 
 
 class OrderDetailsView(DetailView):
