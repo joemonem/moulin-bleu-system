@@ -30,7 +30,7 @@ class Order(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     needed_for = models.DateTimeField()
-    order_items = models.ManyToManyField(OrderItem, null=False, blank=False)
+    order_items = models.ManyToManyField(OrderItem, blank=False)
     paid = models.BooleanField(null=False, default=False)
     delivery = models.BooleanField(null=False, default=False)
     notes = models.TextField(null=True)

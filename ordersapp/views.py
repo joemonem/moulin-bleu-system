@@ -19,7 +19,7 @@ from django.db.models import Q
 from django.db import transaction
 from .models import OrderItem, Order
 from django.utils import timezone
-from .forms import OrderItemForm, OrderForm
+from .forms import OrderItemForm, OrderForm, FoodItemFormSet
 
 
 # Create your views here.
@@ -89,28 +89,41 @@ class AddOrderView(CreateView):
     form_class = OrderForm
     success_url = reverse_lazy("orders")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["order_form"] = OrderForm()
+        context["food_item_formset"] = FoodItemFormSet(prefix="food_items")
+        return context
+
     def form_valid(self, form):
         response = super().form_valid(form)
         new_order = self.object
 
+        # Access food item formset
+        food_item_formset = FoodItemFormSet(self.request.POST, prefix="food_items")
+
         # Accessing values of food_item and quantity from the form
-        food_item = form.cleaned_data["food_item"]
-        quantity = form.cleaned_data["quantity"]
-        # Check if that Order Item exists to avoid creating duplicates
-        existing_order_item = OrderItem.objects.filter(
-            food_item=food_item,
-            quantity=quantity,
-        ).first()
+        for food_form in food_item_formset:
+            # Checking its validity is essential
+            if food_form.is_valid():
+                food_item = food_form.cleaned_data["food_item"]
+                quantity = food_form.cleaned_data["quantity"]
 
-        if existing_order_item:
-            # Use the existing OrderItem if it exists
-            new_order_item = existing_order_item
-        else:
-            # Create a new OrderItem if it doesn't exist
-            new_order_item = OrderItem(food_item=food_item, quantity=quantity)
-            new_order_item.save()
+                # Check if that Order Item exists to avoid creating duplicates
+                existing_order_item = OrderItem.objects.filter(
+                    food_item=food_item,
+                    quantity=quantity,
+                ).first()
 
-        new_order.order_items.add(new_order_item)
+                if existing_order_item:
+                    # Use the existing OrderItem if it exists
+                    new_order_item = existing_order_item
+                else:
+                    # Create a new OrderItem if it doesn't exist
+                    new_order_item = OrderItem(food_item=food_item, quantity=quantity)
+                    new_order_item.save()
+
+                new_order.order_items.add(new_order_item)
 
         # Continue with the default form_valid behavior
         return response

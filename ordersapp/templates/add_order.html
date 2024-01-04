@@ -15,15 +15,18 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ order_form.as_p }}
 
-
-    {% for form in form.order_items %}
-    {{ form.as_table }}
+    {{ food_item_formset.management_form }} {% for form in food_item_formset %}
+    <!--Putting them in a div makes them render on top of each other-->
+    <div class="food-item-form">
+        {{ form.as_table }}
+    </div>
     {% endfor %}
     <br>
     <br>
     <button type="submit" class="btn btn-success">Submit Order</button>
+
 </form>
 
 <br>
