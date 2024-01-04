@@ -2,6 +2,7 @@ from django import forms
 from django.db import models
 from .models import Order, OrderItem
 from django.forms import inlineformset_factory
+from menuapp.models import FoodItem
 
 
 # I could use a form that has all the required fields for the Order model, and ditch the OrderItem model.
@@ -27,6 +28,15 @@ from django.forms import inlineformset_factory
 
 
 class OrderForm(forms.ModelForm):
+    # Field representing a foreign key relationship with FoodItem model
+    food_item = forms.ModelChoiceField(
+        queryset=FoodItem.objects.all(),
+        label="Food Item",
+        empty_label="Select a food item",
+    )
+
+    quantity = forms.FloatField(label="Quantity", initial=1, min_value=0.5)
+
     class Meta:
         model = Order
         fields = [
@@ -41,13 +51,8 @@ class OrderForm(forms.ModelForm):
             "needed_for": forms.widgets.DateTimeInput(attrs={"type": "datetime-local"}),
         }
 
-    # order_items_custom = OrderItemFormSet()
-
 
 class OrderItemForm(forms.ModelForm):
     class Meta:
         model = OrderItem
         exclude = ()
-
-
-OrderItemFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=1)

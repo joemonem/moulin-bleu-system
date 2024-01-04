@@ -14,9 +14,6 @@ class OrderItem(models.Model):
     food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
     # Need to accept floats mosly for the items sold in dozens like sambousek (half dozen, dozen and a half...)
     quantity = models.FloatField()
-    linked_order = models.ForeignKey(
-        "Order", on_delete=models.CASCADE, null=True, blank=True
-    )
 
     @property
     def price(self):
@@ -33,7 +30,7 @@ class Order(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     needed_for = models.DateTimeField()
-    order_items = models.ManyToManyField(OrderItem, null=False)
+    order_items = models.ManyToManyField(OrderItem, null=False, blank=False)
     paid = models.BooleanField(null=False, default=False)
     delivery = models.BooleanField(null=False, default=False)
     notes = models.TextField(null=True)
