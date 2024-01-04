@@ -10,6 +10,13 @@
     {% csrf_token %}
     {{ form.media }}
     {{ form.as_p }}
+
+    {{ food_item_formset.management_form }} {% for form in food_item_formset %}
+    <!--Putting them in a div makes them render on top of each other-->
+    <div class="food-item-form">
+        {{ form.as_table }}
+    </div>
+    {% endfor %}
     <button class="btn btn-dark">Save</button>
 </form>
 <br>

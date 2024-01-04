@@ -57,9 +57,63 @@ class OrderDetailsView(DetailView):
 class EditOrderView(UpdateView):
     model = Order
     template_name = "edit_order.html"
-    fields = ("order_items", "needed_for", "paid")
+    form_class = OrderForm
+    # fields = ("order_items", "needed_for", "paid")
 
-    # form_class = EditForm
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get the order being edited
+        order = self.object
+
+        # Pass the instance to the OrderForm to display existing data
+        context["order_form"] = OrderForm(instance=order)
+
+        # Pass the initial values for the FoodItemFormSet based on the existing order items
+        food_items_initial = [
+            {"food_item": item.food_item, "quantity": item.quantity}
+            for item in order.order_items.all()
+        ]
+        context["food_item_formset"] = FoodItemFormSet(
+            prefix="food_items", initial=food_items_initial
+        )
+
+        return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        new_order = self.object
+        # Clear existing order items
+        new_order.order_items.clear()
+
+        # Access food item formset
+        food_item_formset = FoodItemFormSet(self.request.POST, prefix="food_items")
+
+        # Accessing values of food_item and quantity from the form
+        for food_form in food_item_formset:
+            # Checking its validity is essential
+            if food_form.is_valid():
+                food_item = food_form.cleaned_data["food_item"]
+                quantity = food_form.cleaned_data["quantity"]
+
+                # Check if that Order Item exists to avoid creating duplicates
+                existing_order_item = OrderItem.objects.filter(
+                    food_item=food_item,
+                    quantity=quantity,
+                ).first()
+
+                if existing_order_item:
+                    # Use the existing OrderItem if it exists
+                    new_order_item = existing_order_item
+                else:
+                    # Create a new OrderItem if it doesn't exist
+                    new_order_item = OrderItem(food_item=food_item, quantity=quantity)
+                    new_order_item.save()
+
+                new_order.order_items.add(new_order_item)
+
+        # Continue with the default form_valid behavior
+        return response
 
     def get_success_url(self):
         order = self.object.pk
