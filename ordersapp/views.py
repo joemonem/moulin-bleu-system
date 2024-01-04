@@ -96,9 +96,19 @@ class AddOrderView(CreateView):
         # Accessing values of food_item and quantity from the form
         food_item = form.cleaned_data["food_item"]
         quantity = form.cleaned_data["quantity"]
-        # You can use these values as needed in your view logic
-        new_order_item = OrderItem(food_item=food_item, quantity=quantity)
-        new_order_item.save()
+        # Check if that Order Item exists to avoid creating duplicates
+        existing_order_item = OrderItem.objects.filter(
+            food_item=food_item,
+            quantity=quantity,
+        ).first()
+
+        if existing_order_item:
+            # Use the existing OrderItem if it exists
+            new_order_item = existing_order_item
+        else:
+            # Create a new OrderItem if it doesn't exist
+            new_order_item = OrderItem(food_item=food_item, quantity=quantity)
+            new_order_item.save()
 
         new_order.order_items.add(new_order_item)
 
