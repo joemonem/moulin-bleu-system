@@ -34,20 +34,15 @@ class FoodItemQuantityForm(forms.Form):
     food_item = forms.ModelChoiceField(
         queryset=FoodItem.objects.all(),
         label="Food Item",
+        widget=autocomplete.ModelSelect2(
+            url="food-item-autocomplete", attrs={"data-minimum-input-length": 3}
+        ),
         empty_label="Select a food item",
     )
     quantity = forms.FloatField(label="Quantity", initial=1, min_value=0.5)
 
 
 class OrderForm(forms.ModelForm):
-    # customer = forms.ModelChoiceField(
-    #     queryset=Customer.objects.all(),
-    #     widget=autocomplete.ModelSelect2(
-    #         url="customer-autocomplete", attrs={"data-minimum-input-length": 3}
-    #     ),
-    #     label="Customer",
-    # )
-
     class Meta:
         model = Order
         fields = [

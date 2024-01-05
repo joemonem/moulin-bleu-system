@@ -10,6 +10,7 @@ from .views import (
     AddOrderView,
     OrderSearchView,
     CustomerAutocomplete,
+    FoodItemAutocomplete,
 )
 
 
@@ -27,6 +28,11 @@ urlpatterns = [
         "customer-autocomplete/",
         CustomerAutocomplete.as_view(),
         name="customer-autocomplete",
+    ),
+    path(
+        "food-item-autocomplete/",
+        FoodItemAutocomplete.as_view(),
+        name="food-item-autocomplete",
     ),
     # path("food_details/<int:pk>", FoodDetailsView.as_view(), name="food_details"),
     # path("food_details/edit/<int:pk>", EditFoodView.as_view(), name="edit_food"),

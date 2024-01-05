@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST
 from django.urls import reverse, reverse_lazy
 from dal import autocomplete
 from mainapp.models import Customer
+from menuapp.models import FoodItem
 
 from django.views.generic import (
     ListView,
@@ -195,6 +196,16 @@ class CustomerAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(
                 Q(name__icontains=self.q) | Q(phone_number__icontains=self.q)
             )
+
+        return qs
+
+
+class FoodItemAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = FoodItem.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__icontains=self.q)
 
         return qs
 
