@@ -4,6 +4,8 @@ from .models import Order, OrderItem
 from django.forms import inlineformset_factory, formset_factory
 
 from menuapp.models import FoodItem
+from mainapp.models import Customer
+from dal import autocomplete
 
 
 # I could use a form that has all the required fields for the Order model, and ditch the OrderItem model.
@@ -38,6 +40,14 @@ class FoodItemQuantityForm(forms.Form):
 
 
 class OrderForm(forms.ModelForm):
+    # customer = forms.ModelChoiceField(
+    #     queryset=Customer.objects.all(),
+    #     widget=autocomplete.ModelSelect2(
+    #         url="customer-autocomplete", attrs={"data-minimum-input-length": 3}
+    #     ),
+    #     label="Customer",
+    # )
+
     class Meta:
         model = Order
         fields = [
@@ -49,6 +59,9 @@ class OrderForm(forms.ModelForm):
         ]
 
         widgets = {
+            "customer": autocomplete.ModelSelect2(
+                url="customer-autocomplete", attrs={"data-minimum-input-length": 3}
+            ),
             "needed_for": forms.widgets.DateTimeInput(attrs={"type": "datetime-local"}),
         }
 

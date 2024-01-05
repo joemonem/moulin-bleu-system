@@ -4,7 +4,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.urls import reverse, reverse_lazy
-
+from dal import autocomplete
+from mainapp.models import Customer
 
 from django.views.generic import (
     ListView,
@@ -184,6 +185,18 @@ class AddOrderView(CreateView):
 
     def get_success_url(self):
         return reverse("orders")
+
+
+class CustomerAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Customer.objects.all()
+
+        if self.q:
+            qs = qs.filter(
+                Q(name__icontains=self.q) | Q(phone_number__icontains=self.q)
+            )
+
+        return qs
 
 
 class OrderSearchView(TemplateView):

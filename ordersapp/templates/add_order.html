@@ -12,6 +12,7 @@
 
 <h1>Add Order</h1>
 <br>
+{{ form.media }}
 
 <form method="post">
     {% csrf_token %}
@@ -22,7 +23,9 @@
     <div class="food-item-form">
         {{ form.as_table }}
     </div>
+
     {% endfor %}
+
     <br>
     <br>
     <button type="submit" class="btn btn-success">Submit Order</button>
@@ -31,7 +34,6 @@
 
 <br>
 <a href=" {%url 'orders' %}"> <button class="btn btn-dark">Cancel</button></a>
-
 
 
 {% endblock %}
