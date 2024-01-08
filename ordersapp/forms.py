@@ -13,7 +13,7 @@ class FoodItemQuantityForm(forms.Form):
         queryset=FoodItem.objects.all(),
         label="Food Item",
         widget=autocomplete.ModelSelect2(
-            url="food-item-autocomplete", attrs={"data-minimum-input-length": 3}
+            url="food-item-autocomplete", attrs={"data-minimum-input-length": 2}
         ),
         empty_label="Select a food item",
     )
@@ -33,7 +33,7 @@ class OrderForm(forms.ModelForm):
 
         widgets = {
             "customer": autocomplete.ModelSelect2(
-                url="customer-autocomplete", attrs={"data-minimum-input-length": 3}
+                url="customer-autocomplete", attrs={"data-minimum-input-length": 2}
             ),
             "needed_for": forms.widgets.DateTimeInput(attrs={"type": "datetime-local"}),
         }
