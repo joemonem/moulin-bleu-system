@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {%block content %}
+
 <style>
     body {
         font-family: sans-serif;
@@ -133,11 +134,11 @@
     <li>
         {%if pickup_order_for_today.paid == False%}
         <a href="{%url 'order_details' pickup_order_for_today.pk %}"> {{pickup_order_for_today.customer.name}} -
-            {{pickup_order_for_today.needed_for.time}} -
+            {{pickup_order_for_today.needed_for|time:"H:i A"}} -
             ${{pickup_order_for_today.total_price}} -- NOT paid </a>
         {%else%}
         <a href="{%url 'order_details' pickup_order_for_today.pk %}"> {{pickup_order_for_today.customer.name}} -
-            {{pickup_order_for_today.needed_for.time}} -
+            {{pickup_order_for_today.needed_for|time:"H:i A"}} -
             ${{pickup_order_for_today.total_price}} -- PAID </a>
         {%endif%}
         <br>
@@ -154,11 +155,11 @@
     <li>
         {%if delivery_order_for_today.paid == False%}
         <a href="{%url 'order_details' delivery_order_for_today.pk %}"> {{delivery_order_for_today.customer.name}} -
-            {{delivery_order_for_today.needed_for.time}} -
+            {{delivery_order_for_today.needed_for|time:"H:i A"}} -
             ${{delivery_order_for_today.total_price}} -- NOT paid </a>
         {%else%}
         <a href="{%url 'order_details' delivery_order_for_today.pk %}"> {{delivery_order_for_today.customer.name}} -
-            {{delivery_order_for_today.needed_for.time}} -
+            {{delivery_order_for_today.needed_for|time:"H:i A"}} -
             ${{delivery_order_for_today.total_price}} -- PAID </a>
         {%endif%}
         <br>

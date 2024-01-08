@@ -220,10 +220,8 @@ class OrderSearchView(TemplateView):
 
         # Perform case-insensitive search on customer name
         customer_orders = Order.objects.filter(
-            customer__name__icontains=customer
-        ).order_by(  # Sorts them from latest "created_at" date
-            "-created_at"
-        )
+            Q(customer__name__icontains=customer) | Q(pk__exact=customer)
+        ).order_by("-created_at")
 
         # Add food items to context
         context = self.get_context_data(**kwargs)

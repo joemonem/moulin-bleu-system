@@ -4,6 +4,7 @@
 
 <h1>Order Details</h1>
 <br>
+<h2>#{{order.pk}}</h2>
 <h3>Customer: {{order.customer}}</h3>
 <br>
 <h3>Needed For: {{object.needed_for}}</h3>
@@ -49,6 +50,10 @@
     </button>
     {%endif%}
 </form>
+
+<br>
+<br>
+<button onclick="window.print()">Print this page</button>
 
 
 

@@ -8,28 +8,6 @@ from mainapp.models import Customer
 from dal import autocomplete
 
 
-# I could use a form that has all the required fields for the Order model, and ditch the OrderItem model.
-# class OrderForm(forms.Form):
-#     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-#     food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
-#     # Need to accept floats mosly for the items sold in dozens like sambousek (half dozen, dozen and a half...)
-#     quantity = models.FloatField()
-
-
-# class OrderItemForm(forms.ModelForm):
-#     class Meta:
-#         model = OrderItem
-#         fields = ["food_item", "quantity"]
-
-
-# OrderItemFormSet = inlineformset_factory(
-#     Order,
-#     OrderItem,
-#     form=OrderItemForm,
-#     extra=1,
-# )
-
-
 class FoodItemQuantityForm(forms.Form):
     food_item = forms.ModelChoiceField(
         queryset=FoodItem.objects.all(),

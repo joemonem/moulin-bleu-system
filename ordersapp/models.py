@@ -44,4 +44,8 @@ class Order(models.Model):
         return sum(item.price for item in self.order_items.all())
 
     def __str__(self):
-        return f"{self.customer.name} -- ${self.total_price} -- paid: {self.paid} -- needed for: {self.needed_for}"
+        formatted_time = self.needed_for.astimezone(
+            timezone.get_current_timezone()
+        ).strftime("%Y-%m-%d %H:%M:%S %Z")
+
+        return f"{self.customer.name} -- ${self.total_price} -- paid: {self.paid} -- needed for: {formatted_time}"

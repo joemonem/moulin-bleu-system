@@ -18,19 +18,27 @@
     {% csrf_token %}
     {{ order_form.as_p }}
 
-    {{ food_item_formset.management_form }} {% for form in food_item_formset %}
-    <!--Putting them in a div makes them render on top of each other-->
+
+    {{ food_item_formset.management_form }}
+    {% for form in food_item_formset %}
     <div class="food-item-form">
         {{ form.as_table }}
     </div>
-
     {% endfor %}
+
 
     <br>
     <br>
     <button type="submit" class="btn btn-success">Submit Order</button>
-
+    <br>
+    <button onclick="addMoreFoodItems()">Add More</button>
 </form>
+
+<script>
+    function addMoreFoodItems() {
+        $(".empty-form").first().show();  // Show the first hidden form
+    }
+</script>
 
 <br>
 <a href=" {%url 'orders' %}"> <button class="btn btn-dark">Cancel</button></a>
