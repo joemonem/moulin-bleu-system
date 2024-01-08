@@ -218,10 +218,16 @@ class OrderSearchView(TemplateView):
         # Access search query from POST data
         customer = request.POST.get("submission")
 
-        # Perform case-insensitive search on customer name
-        customer_orders = Order.objects.filter(
-            Q(customer__name__icontains=customer) | Q(pk__exact=customer)
-        ).order_by("-created_at")
+        if customer.isnumeric():
+            # Customer is a number, search for order number
+            customer_orders = Order.objects.filter(pk=int(customer)).order_by(
+                "-created_at"
+            )
+        else:
+            # Customer is a string, search for customer name
+            customer_orders = Order.objects.filter(
+                customer__name__icontains=customer
+            ).order_by("-created_at")
 
         # Add food items to context
         context = self.get_context_data(**kwargs)
