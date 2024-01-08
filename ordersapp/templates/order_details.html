@@ -36,7 +36,18 @@
 
 
 <hr>
-<a href="{%url 'orders' %}"> <button class="btn btn-dark">Back</button></a>
+
+<!--Context-aware back button. If the order is for today, it will take you to the today section, if not it will take you to the future section-->
+{% now "Y-m-d" as current_date %}
+
+{% if object.needed_for|date:"Y-m-d" == current_date %}
+{# Needed for today, redirect to "home" #}
+<a href="{% url 'home' %}"><button class="btn btn-dark">Back</button></a>
+{% else %}
+{# Needed for a future date, redirect to "future_orders" #}
+<a href="{% url 'future_orders' %}"><button class="btn btn-dark">Back</button></a>
+{% endif %}
+
 <a href="{%url 'edit_order' object.pk %}"> <button class="btn btn-dark">Edit</button></a>
 <br>
 <br>
