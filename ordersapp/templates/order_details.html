@@ -18,6 +18,9 @@
 
 <br>
 <h3>For Delivery: {{object.delivery}} </h3>
+{%if object.delivery%}
+<h3>Customer's Location: {{order.customer.location}}</h3>
+{%endif%}
 
 {%if object.paid == False %}
 <h3 style="color: red;">NOT paid </h3>

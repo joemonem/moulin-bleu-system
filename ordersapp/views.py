@@ -143,7 +143,6 @@ class AddOrderView(CreateView):
     model = Order
     template_name = "add_order.html"
     form_class = OrderForm
-    success_url = reverse_lazy("orders")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -185,7 +184,8 @@ class AddOrderView(CreateView):
         return response
 
     def get_success_url(self):
-        return reverse("orders")
+        order = self.object.pk
+        return reverse("order_details", args=[order])
 
 
 class CustomerAutocomplete(autocomplete.Select2QuerySetView):
