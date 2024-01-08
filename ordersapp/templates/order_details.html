@@ -17,8 +17,8 @@
 </ul>
 
 <br>
-<h3>For Delivery: {{object.delivery}} </h3>
 {%if object.delivery%}
+<h3>For Delivery 📦</h3>
 <h3>Customer's Location: {{order.customer.location}}</h3>
 {%endif%}
 
@@ -29,7 +29,10 @@
 {%endif%}
 
 <h3>Total Price: ${{object.total_price}}</h3>
+
+{%if object.notes %}
 <h3>Notes: {{object.notes}}</h3>
+{%endif%}
 
 <p>Created At: {{object.created_at}}</p>
 

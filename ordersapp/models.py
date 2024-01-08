@@ -33,7 +33,7 @@ class Order(models.Model):
     order_items = models.ManyToManyField(OrderItem, blank=False)
     paid = models.BooleanField(null=False, default=False)
     delivery = models.BooleanField(null=False, default=False)
-    notes = models.TextField(null=True)
+    notes = models.TextField(null=True, blank=True)
 
     def calculate_total_price(self):
         self.total_price = sum(item.price for item in self.order_items.all())
