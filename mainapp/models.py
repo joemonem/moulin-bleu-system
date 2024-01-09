@@ -8,12 +8,12 @@ from django.urls import reverse
 
 class Customer(models.Model):
     # Full name
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=50)
 
-    phone_number = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=32)
 
-    # what3words location
-    location = models.CharField(max_length=255)
+    # Goole Plus Code location
+    location = models.CharField(max_length=200, blank=True)
 
     # the date our customer was added to our database
     date_added = models.DateField(default=timezone.now)
